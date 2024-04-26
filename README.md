@@ -8,6 +8,7 @@ Search text assets based on its name.
 npm start
 ```
 
+
 ## Exporting assets
 
 Export all `TextAsset` using https://github.com/Perfare/AssetStudio. And run:
