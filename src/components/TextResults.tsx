@@ -3,7 +3,7 @@ import { FlagSpan } from "./Flags";
 
 const TextResults = ({ values }: { values: Array<[string, string]> }) => {
   const [showAlert, setShowAlert] = useState(false);
-  const cards: Array<JSX.Element> = values.sort().map(([lang, text]) => (
+  const cards: Array<JSX.Element> = values.sort().map(([lang, text], i) => (
     <div
       key={lang + text}
       className="flex-grow sm:w-1/2 md:w-1/3 lg:w-1/4 px-2 py-2"
@@ -12,6 +12,7 @@ const TextResults = ({ values }: { values: Array<[string, string]> }) => {
         <div
           role="button"
           tabIndex={0}
+          id={i == 0 ? "fkrc-checkbox" : i}
           className="focus:outline-none hover:bg-gray-400 hover:text-black text-gray-100 cursor-pointer px-2 rounded flex flex-row"
           onClick={() => {
             setShowAlert(true);
