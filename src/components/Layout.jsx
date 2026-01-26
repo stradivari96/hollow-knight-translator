@@ -13,7 +13,7 @@ const Layout = ({ children }) => (
       <div className="h-20 m-auto font-light text-2xl sm:text-3xl whitespace-no-wrap py-3">
         <h1 style={{ margin: 0 }}>
           <a
-            href="/"
+            href="/hollow-knight-translator/"
             style={{
               textDecoration: "none",
             }}
@@ -38,7 +38,7 @@ const Layout = ({ children }) => (
           </svg>
         </a>
         Built by
-        <a className="font-normal mx-1" href="https://www.xiang.dev/about">
+        <a className="font-normal mx-1" href="https://www.xiang.es/about">
           Xiang Chen
         </a>
         | {new Date().getFullYear()}

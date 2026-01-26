@@ -12,7 +12,7 @@ const Form = ({ inputText, setInputText, selectedLanguages }) => (
       id="search"
       type="text"
       name="search"
-      className="shadow appearance-none border w-full rounded-3xl py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      className="shadow appearance-none border border-gray-300 bg-white w-full rounded-3xl py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       value={inputText}
       placeholder="Text"
       onChange={(e) => setInputText(e.target.value)}
