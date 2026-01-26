@@ -1,4 +1,1 @@
-@import url("https://cdn.rawgit.com/lipis/flag-icon-css/33ab3e40/css/flag-icon.min.css");
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";

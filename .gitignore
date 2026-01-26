@@ -5,3 +5,4 @@ public/
 TextAsset/*
 !TextAsset/
 !TextAsset/.gitkeep
+dist/

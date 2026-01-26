@@ -1,12 +1,6 @@
 import React from "react";
 
-type FormProps = {
-  inputText: string;
-  setInputText: Function;
-  selectedLanguages: Array<string>;
-};
-
-const Form = ({ inputText, setInputText, selectedLanguages }: FormProps) => (
+const Form = ({ inputText, setInputText, selectedLanguages }) => (
   <form className="mx-auto sm:w-4/5">
     <label
       className="block text-gray-700 text-sm font-bold mb-2"

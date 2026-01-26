@@ -18,7 +18,7 @@ const langs = [
 langs.sort();
 langs.unshift("All");
 
-export const FlagSpan = ({ value }: { value: string }) => {
+export const FlagSpan = ({ value }) => {
   const lowerCaseSuffix = ["JP", "FR", "RU", "PT", "ES", "IT", "DE"];
   let flagSuffix;
   if (lowerCaseSuffix.indexOf(value) >= 0) {
@@ -47,16 +47,10 @@ export const FlagSpan = ({ value }: { value: string }) => {
         return null;
     }
   }
-  return <span className={`flag-icon flag-icon-${flagSuffix}`} />;
+  return <span className={`fi fi-${flagSuffix}`} />;
 };
 
-type FlagProps = {
-  value: string;
-  onSelect: Function;
-  selectedLanguages: Set<string>;
-};
-
-const Flag = ({ value, onSelect, selectedLanguages }: FlagProps) => {
+const Flag = ({ value, onSelect, selectedLanguages }) => {
   const checked =
     selectedLanguages.has(value) ||
     (value === "All" && selectedLanguages.size === 0);
@@ -76,12 +70,7 @@ const Flag = ({ value, onSelect, selectedLanguages }: FlagProps) => {
   );
 };
 
-type FlagsProps = {
-  onSelect: Function;
-  selectedLanguages: Set<string>;
-};
-
-const Flags = ({ onSelect, selectedLanguages }: FlagsProps) => (
+const Flags = ({ onSelect, selectedLanguages }) => (
   <div className="grid py-2 my-3 m-auto grid-cols-3 sm:grid-cols-5 lg:grid-cols-9">
     {langs.map((k) => (
       <Flag
