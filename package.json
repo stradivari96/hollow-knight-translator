@@ -2,7 +2,7 @@
   "name": "hollow-knight-translator",
   "description": "Translate ingame text",
   "version": "1.0.0",
-  "author": "Xiang Chen <xiangchenchen96@gmail.com>",
+  "author": "Stradivari",
   "dependencies": {
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
