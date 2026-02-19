@@ -42,6 +42,7 @@ const Layout = ({ children }) => (
           Xiang Chen
         </a>
         | Patch 1.5.12459
+      </p>
     </footer>
   </div>
 );
