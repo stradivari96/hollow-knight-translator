@@ -41,8 +41,7 @@ const Layout = ({ children }) => (
         <a className="font-normal mx-1" href="https://www.xiang.es/about">
           Xiang Chen
         </a>
-        | {new Date().getFullYear()}
-      </p>
+        | Patch 1.5.12459
     </footer>
   </div>
 );

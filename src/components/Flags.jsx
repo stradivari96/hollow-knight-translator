@@ -1,18 +1,15 @@
 import React from "react";
 
 const langs = [
-  "JP",
-  "FR",
-  "RU",
-  "PT",
-  "SC",
-  "ES",
-  "KO",
-  "IT",
-  "JA",
   "DE",
   "EN",
-  "BP",
+  "ES",
+  "FR",
+  "IT",
+  "JA",
+  "KO",
+  "PT",
+  "RU",
   "ZH",
 ];
 langs.sort();
