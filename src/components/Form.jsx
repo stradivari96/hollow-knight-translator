@@ -1,10 +1,8 @@
-import React from "react";
-
 const Form = ({ inputText, setInputText, selectedLanguages }) => (
   <form className="mx-auto sm:w-4/5">
     <label
       className="block text-gray-700 text-sm font-bold mb-2"
-      htmlFor="text"
+      htmlFor="search"
     >
       Search
     </label>

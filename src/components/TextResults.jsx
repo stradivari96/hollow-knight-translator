@@ -1,7 +1,7 @@
 import ResultCard from "./ResultCard";
 
 const TextResults = ({ values, searchQuery }) => {
-  const cards = values
+  const cards = [...values]
     .sort()
     .map(([lang, text], i) => (
       <ResultCard

@@ -1,12 +1,6 @@
 import { useState, useId } from "react";
 import { FlagSpan } from "./Flags";
-
-const normalize = (str) => {
-  return str
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-};
+import { normalize } from "../utils";
 
 const getHighlightedText = (text, highlight) => {
   if (!highlight) return text;
@@ -88,9 +82,10 @@ const ResultCard = ({ lang, text, index, searchQuery }) => {
   const divId = index === 0 ? "fkrc-checkbox" : uniqueId;
 
   const handleCopy = () => {
-    setShowAlert(true);
-    navigator.clipboard.writeText(text);
-    setTimeout(() => setShowAlert(false), 1000);
+    navigator.clipboard.writeText(text).then(() => {
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 1000);
+    });
   };
 
   return (

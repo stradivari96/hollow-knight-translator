@@ -4,13 +4,9 @@ import Layout from "./components/Layout";
 import TextResults from "./components/TextResults";
 import Flags from "./components/Flags";
 import Form from "./components/Form";
+import { normalize } from "./utils";
 
 import AllText from "./all_text.json";
-
-const normalize = (str) => {
-  str = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-  return str.toLowerCase();
-};
 
 const App = () => {
   const [inputText, setInputText] = useState("");
@@ -50,7 +46,7 @@ const App = () => {
     const delayDebounceFn = setTimeout(() => {
       const searchStr = normalize(inputText);
       const foundVariablesSet = new Set();
-      Object.entries(AllText).forEach(([lang, data]) => {
+      Object.entries(AllText).forEach(([, data]) => {
         Object.entries(data).forEach(([k, v]) => {
           if (foundVariablesSet.has(k)) return;
           if (!v) return;
@@ -69,7 +65,7 @@ const App = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [selectedLanguages, inputText]);
+  }, [inputText]);
 
   // Get results
   useEffect(() => {
@@ -114,16 +110,12 @@ const App = () => {
   }, [inputText, selectedLanguages, isLoading]);
 
   const onSelect = (value) => {
-    setIsLoading(true);
-    if (value === "All") selectedLanguages.clear();
-    else {
-      if (selectedLanguages.has(value)) {
-        selectedLanguages.delete(value);
-      } else {
-        selectedLanguages.add(value);
-      }
-    }
-    setSelectedLanguages(new Set(selectedLanguages));
+    setSelectedLanguages((prev) => {
+      if (value === "All") return new Set();
+      const next = new Set(prev);
+      next.has(value) ? next.delete(value) : next.add(value);
+      return next;
+    });
   };
 
   return (
@@ -140,40 +132,32 @@ const App = () => {
         />
         <Flags onSelect={onSelect} selectedLanguages={selectedLanguages} />
         <div className="px-2">
-          {variables.length > 5 ? (
-            <select
-              className="block w-full border border-gray-300 bg-white text-gray-700 py-2 my-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:shadow-outline"
-              value={selectedVariable}
-              required
-              onChange={(event) => {
-                setSelectedVariable(event.target.value);
-              }}
-            >
-              {variables.map((a) => (
-                <option key={a} value={a}>
-                  {a}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <div className="flex overflow-x-auto pb-2 mb-4 border-b border-gray-300">
-              <div className="flex flex-nowrap space-x-2">
-                {variables.map((v) => (
-                  <button
-                    key={v}
-                    onClick={() => setSelectedVariable(v)}
-                    className={`px-4 py-2 text-sm font-medium rounded-t-lg transition-colors duration-200 whitespace-nowrap border-b-2 ${
-                      selectedVariable === v ||
-                      (!selectedVariable && variables[0] === v)
-                        ? "text-black border-gray-800 bg-gray-200"
-                        : "text-gray-500 border-transparent hover:text-gray-700 hover:bg-gray-100"
-                    }`}
-                  >
-                    {v}
-                  </button>
-                ))}
+          {variables.length > 0 && (
+            <>
+              <p className="text-sm text-gray-500 mb-1">
+                {variables.length} match{variables.length !== 1 ? "es" : ""}
+              </p>
+              <div className="overflow-y-auto max-h-48 border border-gray-300 rounded-lg mb-4 bg-white shadow-sm">
+                {variables.map((v) => {
+                  const isActive =
+                    selectedVariable === v ||
+                    (!selectedVariable && variables[0] === v);
+                  return (
+                    <button
+                      key={v}
+                      onClick={() => setSelectedVariable(v)}
+                      className={`w-full text-left px-4 py-2 text-sm transition-colors duration-150 ${
+                        isActive
+                          ? "bg-gray-200 text-black font-medium"
+                          : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                      }`}
+                    >
+                      {v}
+                    </button>
+                  );
+                })}
               </div>
-            </div>
+            </>
           )}
         </div>
 
