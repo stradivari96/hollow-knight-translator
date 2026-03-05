@@ -53,8 +53,10 @@ const Flag = ({ value, onSelect, selectedLanguages }) => {
     (value === "All" && selectedLanguages.size === 0);
   return (
     <div
-      className={`flex flex-row text-sm justify-around rounded-full w-16 sm:w-20 mx-auto my-2 px-3 py-1 hover:opacity-75 ${
-        checked ? "bg-gray-400" : "bg-gray-300"
+      className={`flex flex-row text-sm justify-around rounded-full w-16 sm:w-20 mx-auto my-2 px-3 py-1 hover:opacity-75 cursor-pointer transition-colors ${
+        checked
+          ? "bg-gray-400 dark:bg-gray-600 dark:text-white"
+          : "bg-gray-300 dark:bg-gray-800 dark:text-gray-300"
       }`}
       role="button"
       onClick={() => {

@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 
 import Layout from "./components/Layout";
 import TextResults from "./components/TextResults";
 import Flags from "./components/Flags";
 import Form from "./components/Form";
+const Changelog = lazy(() => import("./components/Changelog"));
 import { normalize } from "./utils";
 
 import AllText from "./all_text.json";
@@ -15,12 +16,24 @@ const App = () => {
   const [selectedLanguages, setSelectedLanguages] = useState(new Set());
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState("search");
+  const [darkMode, setDarkMode] = useState(
+    () => localStorage.getItem("darkMode") === "true"
+  );
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", darkMode);
+    localStorage.setItem("darkMode", darkMode);
+  }, [darkMode]);
 
   // URL param parsing
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const initialInput = params.get("search");
     const lang = params.get("lang");
+    const initialPage = params.get("page") || "search";
+
+    setPage(initialPage);
 
     const initialLangs = new Set();
     if (lang)
@@ -104,10 +117,16 @@ const App = () => {
       params.delete("lang");
     }
 
+    if (page !== "search") {
+      params.set("page", page);
+    } else {
+      params.delete("page");
+    }
+
     const query = params.toString();
     const newUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
     window.history.replaceState(null, "", newUrl);
-  }, [inputText, selectedLanguages, isLoading]);
+  }, [inputText, selectedLanguages, isLoading, page]);
 
   const onSelect = (value) => {
     setSelectedLanguages((prev) => {
@@ -118,57 +137,81 @@ const App = () => {
     });
   };
 
+  const onKeyClick = (key) => {
+    setInputText(key);
+    setSelectedVariable(key);
+    setPage("search");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <Layout>
-      <div>
-        <Form
-          inputText={inputText}
-          setInputText={(val) => {
-            setInputText(val);
-            if (val === "") setIsLoading(false);
-            else setIsLoading(true);
-          }}
-          selectedLanguages={Array.from(selectedLanguages).sort()}
-        />
-        <Flags onSelect={onSelect} selectedLanguages={selectedLanguages} />
-        <div className="px-2">
-          {variables.length > 0 && (
-            <>
-              <p className="text-sm text-gray-500 mb-1">
-                {variables.length} match{variables.length !== 1 ? "es" : ""}
-              </p>
-              <div className="overflow-y-auto max-h-48 border border-gray-300 rounded-lg mb-4 bg-white shadow-sm">
-                {variables.map((v) => {
-                  const isActive =
-                    selectedVariable === v ||
-                    (!selectedVariable && variables[0] === v);
-                  return (
-                    <button
-                      key={v}
-                      onClick={() => setSelectedVariable(v)}
-                      className={`w-full text-left px-4 py-2 text-sm transition-colors duration-150 ${
-                        isActive
-                          ? "bg-gray-200 text-black font-medium"
-                          : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                      }`}
-                    >
-                      {v}
-                    </button>
-                  );
-                })}
-              </div>
-            </>
+    <Layout
+      page={page}
+      setPage={setPage}
+      darkMode={darkMode}
+      toggleDarkMode={() => setDarkMode((d) => !d)}
+    >
+      {page === "changelog" ? (
+        <Suspense
+          fallback={
+            <div className="flex justify-center items-center py-10">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-gray-100"></div>
+            </div>
+          }
+        >
+          <Changelog onKeyClick={onKeyClick} />
+        </Suspense>
+      ) : (
+        <div>
+          <Form
+            inputText={inputText}
+            setInputText={(val) => {
+              setInputText(val);
+              if (val === "") setIsLoading(false);
+              else setIsLoading(true);
+            }}
+            selectedLanguages={Array.from(selectedLanguages).sort()}
+          />
+          <Flags onSelect={onSelect} selectedLanguages={selectedLanguages} />
+          <div className="px-2">
+            {variables.length > 0 && (
+              <>
+                <p className="text-sm text-gray-500 mb-1 dark:text-gray-400">
+                  {variables.length} match{variables.length !== 1 ? "es" : ""}
+                </p>
+                <div className="overflow-y-auto max-h-48 border border-gray-300 rounded-lg mb-4 bg-white shadow-sm dark:bg-gray-800 dark:border-gray-700">
+                  {variables.map((v) => {
+                    const isActive =
+                      selectedVariable === v ||
+                      (!selectedVariable && variables[0] === v);
+                    return (
+                      <button
+                        key={v}
+                        onClick={() => setSelectedVariable(v)}
+                        className={`w-full text-left px-4 py-2 text-sm transition-colors duration-150 cursor-pointer ${
+                          isActive
+                            ? "bg-gray-200 text-black font-medium dark:bg-gray-700 dark:text-white"
+                            : "text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+                        }`}
+                      >
+                        {v}
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+          </div>
+
+          {isLoading ? (
+            <div className="flex justify-center items-center py-10">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-gray-100"></div>
+            </div>
+          ) : (
+            <TextResults values={results} searchQuery={inputText} />
           )}
         </div>
-
-        {isLoading ? (
-          <div className="flex justify-center items-center py-10">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-          </div>
-        ) : (
-          <TextResults values={results} searchQuery={inputText} />
-        )}
-      </div>
+      )}
     </Layout>
   );
 };

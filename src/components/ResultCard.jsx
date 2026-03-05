@@ -51,7 +51,7 @@ const getHighlightedText = (text, highlight) => {
 
     if (matchEnd > matchStart) {
       parts.push(
-        <span key={matchStart} className="bg-yellow-200 text-black">
+        <span key={matchStart} className="bg-yellow-200 dark:bg-yellow-900/40 text-black dark:text-white">
           {text.slice(matchStart, matchEnd)}
         </span>,
       );
@@ -90,12 +90,12 @@ const ResultCard = ({ lang, text, index, searchQuery }) => {
 
   return (
     <div className="flex-grow sm:w-1/2 md:w-1/3 lg:w-1/4 px-2 py-2">
-      <div className="bg-gray-100 rounded px-2 py-2 shadow h-full">
+      <div className="bg-gray-100 dark:bg-gray-800 rounded px-2 py-2 shadow h-full">
         <div
           role="button"
           tabIndex={0}
           id={divId}
-          className="focus:outline-none hover:bg-gray-400 hover:text-black text-gray-100 cursor-pointer px-2 rounded flex flex-row"
+          className="focus:outline-none hover:bg-gray-400 hover:text-black dark:hover:bg-gray-700 dark:hover:text-white text-gray-100 dark:text-gray-400 cursor-pointer px-2 rounded flex flex-row transition-colors"
           onClick={handleCopy}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
@@ -108,7 +108,7 @@ const ResultCard = ({ lang, text, index, searchQuery }) => {
             {showAlert ? "Copied!   " : "Copy text"}
           </p>
         </div>
-        <p className="px-2 py-2 break-words" style={{ whiteSpace: "pre-line" }}>
+        <p className="px-2 py-2 break-words dark:text-gray-200" style={{ whiteSpace: "pre-line" }}>
           {getHighlightedText(text, searchQuery)}
         </p>
       </div>
