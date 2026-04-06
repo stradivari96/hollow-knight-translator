@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { FlagSpan } from "./Flags";
 import changelog from "../changelog.json";
 
-const LANGS = ["DE", "EN", "ES", "FR", "IT", "JA", "KO", "PT", "RU", "ZH"];
+const LANGS = ["DE", "EN", "ES", "FR", "IT", "JA", "KO", "PT", "RU", "ZH", "ZH_TW"];
 
 const lcsDiff = (oldLines, newLines) => {
   const m = oldLines.length, n = newLines.length;

@@ -41,6 +41,9 @@ const TextResults = ({ values, searchQuery, variableName, allTranslations }) => 
 |RUname = ${getVal("RU")}
 |RUromanised = 
 |RUmeaning = 
+|TWname = ${getVal("ZH_TW")}
+|TWromanised = 
+|TWmeaning = 
 |ZHname = ${getVal("ZH")}
 |ZHromanised = 
 |ZHmeaning = 
