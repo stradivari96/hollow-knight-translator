@@ -32,6 +32,12 @@ const Layout = ({ children, page, setPage, darkMode, toggleDarkMode }) => {
               Silksong Translator
             </a>
             <button
+              onClick={() => setPage(page === "textdump" ? "search" : "textdump")}
+              className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-100 transition-colors underline underline-offset-2 cursor-pointer"
+            >
+              {page === "textdump" ? "← Search" : "Text Dump"}
+            </button>
+            <button
               onClick={() => setPage(page === "changelog" ? "search" : "changelog")}
               className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-100 transition-colors underline underline-offset-2 cursor-pointer"
             >

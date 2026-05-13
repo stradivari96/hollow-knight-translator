@@ -5,6 +5,7 @@ import TextResults from "./components/TextResults";
 import Flags from "./components/Flags";
 import Form from "./components/Form";
 const Changelog = lazy(() => import("./components/Changelog"));
+const TextDump = lazy(() => import("./components/TextDump"));
 import { normalize } from "./utils";
 
 import AllText from "./all_text.json";
@@ -160,6 +161,16 @@ const App = () => {
           }
         >
           <Changelog onKeyClick={onKeyClick} />
+        </Suspense>
+      ) : page === "textdump" ? (
+        <Suspense
+          fallback={
+            <div className="flex justify-center items-center py-10">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-gray-100"></div>
+            </div>
+          }
+        >
+          <TextDump />
         </Suspense>
       ) : (
         <div>
